@@ -1,7 +1,18 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 
-testColl = new Mongo.Collection('test')
+Animal = function (doc) {
+  _.extend(this, doc);
+};
+_.extend(Animal.prototype, {
+  makeNoise: function () {
+    console.log(this.sound);
+  }
+});
+
+testColl = new Mongo.Collection('test', {
+	transform: function (doc) { return new Animal(doc); }
+})
 
 Meteor.startup(() => {
 
@@ -68,7 +79,7 @@ Meteor.startup(() => {
 
    // Add handler
 
-   testColl.helpers({ foo: () => "bar" })
+  //  testColl.helpers({ foo: () => "bar" })
 
    // Rerun tests
 
